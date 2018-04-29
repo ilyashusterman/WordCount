@@ -6,12 +6,12 @@ from tornado.options import parse_command_line
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello, world")
+        self.write('Hello, world')
 
 
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r'/', MainHandler),
     ])
 
 
