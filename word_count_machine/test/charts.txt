@@ -1,0 +1,101 @@
+
+
+
+
+
+
+
+
+Chart.js
+Simple yet flexible JavaScript charting for designers & developers
+
+
+Get Started
+Samples
+GitHub
+
+
+
+
+
+
+
+New in 2.0
+							Mixed chart types
+						
+Mix and match bar and line charts to provide a clear visual distinction between datasets.
+
+
+
+
+
+
+
+
+New in 2.0
+							New chart axis types
+						
+Plot complex, sparse datasets on date time, logarithmic or even entirely custom scales with ease.
+
+
+
+
+
+
+
+
+New in 2.0
+							Animate everything!
+						
+Out of the box stunning transitions when changing data, updating colours and adding datasets.
+
+
+
+
+
+
+
+
+
+
+
+
+Open source
+Chart.js is a community maintained project, contributions welcome!
+
+
+
+
+
+8 Chart types
+Visualize your data in 8 different ways; each of them animated and customisable.
+
+
+
+
+
+HTML5 Canvas
+Great rendering performance across all modern browsers (IE9+).
+
+
+
+
+
+Responsive
+Redraws charts on window resize for perfect scale granularity.
+
+
+
+
+
+Find Chart.js on GitHub or  Read detailed documentation
+
+
+
+
+
+
+
+Chart.js was built from the hard work of all these contributors.
+
+
