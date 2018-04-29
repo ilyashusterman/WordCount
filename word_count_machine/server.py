@@ -3,15 +3,23 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import parse_command_line
 
+STATIC_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                           'client/build/static'))
+
+CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                           'client'))
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write('Hello, world')
+        with open(os.path.join(CLIENT_PATH, 'build/index.html')) as f:
+            self.write(f.read())
 
 
 def make_app():
     return tornado.web.Application([
         (r'/', MainHandler),
+        (r'/static/(.*)', tornado.web.StaticFileHandler,
+         {'path': STATIC_PATH}),
     ])
 
 
