@@ -5,7 +5,7 @@ from unittest import mock
 from tornado.testing import AsyncHTTPTestCase
 
 from word_count_machine import server
-from word_count_machine.server import LoginHandler
+from word_count_machine.server import LoginHandler, WordCounterHandler
 
 
 class TestServer(AsyncHTTPTestCase):
@@ -36,10 +36,9 @@ class TestServer(AsyncHTTPTestCase):
             'words': ['chart'],
             'url': 'http://www.chartjs.org/'
         }
-        print('2')
-        response = self.fetch('/count', body=json.dumps(body),
-                              method='POST')
-        print(response)
-        response_body = json.loads(response.body)
-        print(response_body)
-        assert False
+        with mock.patch.object(WordCounterHandler, 'get_secure_cookie') as m:
+            m.return_value = 'user'
+            response = self.fetch('/count', body=json.dumps(body),
+                                  method='POST')
+            response_body = json.loads(response.body)
+            self.assertDictEqual(response_body, {'chart': 7})
