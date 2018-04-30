@@ -27,11 +27,15 @@ class WordCounterHandler(BaseHandler):
         self.word_counter = word_counter
 
     def post(self):
+        print('user={}'.format(self.get_current_user()))
         if not self.current_user:
-            return
+            self.set_status(403)
+            self.write(json.dumps({'status': 'not authenticated'}))
         else:
-            url = self.get_body_argument('url')
-            words = self.get_body_argument('words')
+            data = json.loads(self.request.body)
+            print('body')
+            url = data['url']
+            words = data['words']
             counts = self.word_counter.get_words_count_url(words, url)
             self.write(json.dumps(counts))
 
@@ -51,7 +55,7 @@ class LoginHandler(BaseHandler):
     def post(self):
         data = tornado.escape.json_decode(self.request.body)
         if self.login_auth.authenticate(data['username'], data['password']):
-            self.set_secure_cookie('user', data['username'])
+            self.set_secure_cookie('user', data['username'], expires_days=1)
             self.write(json.dumps({'status': 'ok'}))
         else:
             self.set_status(400)

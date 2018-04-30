@@ -1,8 +1,11 @@
 import json
+from time import sleep
+from unittest import mock
 
 from tornado.testing import AsyncHTTPTestCase
 
 from word_count_machine import server
+from word_count_machine.server import LoginHandler
 
 
 class TestServer(AsyncHTTPTestCase):
@@ -12,6 +15,31 @@ class TestServer(AsyncHTTPTestCase):
     def test_server_login(self):
         body = {'username': 'ilya',
                 'password': 'password'}
+        self.check_login(body, {'status': 'ok'})
+
+    def test_server_false_login(self):
+        body = {'username': 'ilya',
+                'password': 'password2'}
+        response_result = {'reason': 'wrong credentials'}
+        self.check_login(body, response_result)
+
+    def check_login(self, body, response_result):
         response = self.fetch('/login', body=json.dumps(body), method='POST')
         response_body = json.loads(response.body)
-        self.assertDictEqual(response_body, {'status': 'ok'})
+        self.assertDictEqual(response_body, response_result)
+
+    def test_words_count(self):
+        self.check_login({'username': 'ilya',
+                'password': 'password'}, {'status': 'ok'})
+        sleep(3)
+        body = {
+            'words': ['chart'],
+            'url': 'http://www.chartjs.org/'
+        }
+        print('2')
+        response = self.fetch('/count', body=json.dumps(body),
+                              method='POST')
+        print(response)
+        response_body = json.loads(response.body)
+        print(response_body)
+        assert False
