@@ -33,7 +33,6 @@ class WordCounterHandler(BaseHandler):
             self.write(json.dumps({'status': 'not authenticated'}))
         else:
             data = json.loads(self.request.body)
-            print('body')
             url = data['url']
             words = data['words']
             counts = self.word_counter.get_words_count_url(words, url)
