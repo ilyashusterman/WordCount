@@ -4,13 +4,12 @@ import os
 
 from word_count_machine.WordCounter import WordCounter
 
-CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                           ''))
+TEST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ''))
 
 
 class TestWordCounter(TestCase):
     def setUp(self):
-        self.charts_text = open(os.path.join(CLIENT_PATH, 'charts.txt'),
+        self.charts_text = open(os.path.join(TEST_PATH, 'charts.txt'),
                                 'r+').read()
         self.word_counter = WordCounter()
 
