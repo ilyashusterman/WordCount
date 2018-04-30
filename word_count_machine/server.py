@@ -49,10 +49,10 @@ class LoginHandler(BaseHandler):
         self.login_auth = login_auth
 
     def post(self):
-        username = self.get_body_argument('username')
-        password = self.get_body_argument('password')
-        if self.login_auth.authenticate(username, password):
-            self.set_secure_cookie('user', self.get_argument('name'))
+        data = tornado.escape.json_decode(self.request.body)
+        if self.login_auth.authenticate(data['username'], data['password']):
+            self.set_secure_cookie('user', data['username'])
+            self.write(json.dumps({'status': 'ok'}))
         else:
             self.set_status(400)
             self.write(json.dumps({'reason': 'wrong credentials'}))
