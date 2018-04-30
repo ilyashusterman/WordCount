@@ -1,3 +1,4 @@
+import json
 import os
 from secrets import token_urlsafe
 
@@ -14,12 +15,13 @@ STATIC_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
 CLIENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                            'client'))
 
+
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
-        return self.get_secure_cookie("user")
+        return self.get_secure_cookie('user')
+
 
 class WordCounterHandler(BaseHandler):
-
     def initialize(self, word_counter):
         super(WordCounterHandler, self).initialize()
         self.word_counter = word_counter
@@ -28,7 +30,11 @@ class WordCounterHandler(BaseHandler):
         if not self.current_user:
             return
         else:
+            url = self.get_body_argument('url')
+            words = self.get_body_argument('words')
             counts = self.word_counter.get_words_count_url(words, url)
+            self.write(json.dumps(counts))
+
 
 
 class MainHandler(BaseHandler):
@@ -36,15 +42,20 @@ class MainHandler(BaseHandler):
         with open(os.path.join(CLIENT_PATH, 'build/index.html')) as f:
             self.write(f.read())
 
-class LoginHandler(BaseHandler):
 
+class LoginHandler(BaseHandler):
     def initialize(self, login_auth):
         super(LoginHandler, self).initialize()
         self.login_auth = login_auth
 
     def post(self):
+        username = self.get_body_argument('username')
+        password = self.get_body_argument('password')
         if self.login_auth.authenticate(username, password):
-            self.set_secure_cookie("user", self.get_argument("name"))
+            self.set_secure_cookie('user', self.get_argument('name'))
+        else:
+            self.set_status(400)
+            self.write(json.dumps({'reason': 'wrong credentials'}))
 
 
 def make_app():
