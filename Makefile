@@ -1,5 +1,5 @@
 ################################################################################
-# Makefile for installing dependencies
+# Makefile for installing plugins , setting database
 ################################################################################
 
 # Prefer bash shell
@@ -15,7 +15,6 @@ else
 endif
 
 #--database=sqlite3
-
 
 .PHONY: create_local_db
 create_local_db:
