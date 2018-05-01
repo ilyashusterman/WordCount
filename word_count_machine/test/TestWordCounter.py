@@ -45,3 +45,13 @@ class TestWordCounter(TestCase):
             self.word_counter.get_words_count_url(words,
                                                   'http://www.chartjs.org/')
         self.assertDictEqual(check_result, words_count)
+
+    def test_count_match_list_from_text(self):
+        words = ['developers', 'chart']
+        check_result = {
+            'developers': 1,
+            'chart': 5
+        }
+        words_count = \
+            self.word_counter.get_matches_count_dict(words, self.charts_text)
+        self.assertDictEqual(check_result, words_count)

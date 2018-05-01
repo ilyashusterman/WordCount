@@ -18,10 +18,23 @@ class WordCounter(object):
         words = re.findall(r'\w+', charts_text.lower())
         return dict(Counter(words))
 
+    def get_all_matches_count(self, match, text):
+        return {match: text.count(match)}
+
+    def get_matches_count_dict(self, list_matches, text):
+        counts = {}
+        for word in list_matches:
+            counts.update(self.get_all_matches_count(word, text))
+        return counts
+
     def get_words_count_dict(self, words, text):
         counts = self.get_all_words_count(text)
-        print('counts={}'.format(counts))
-        return {word: counts[word] for word in words if word in counts}
+        expressions = [word for word in words if len(word.split(' ')) > 1]
+        words_count = {word: counts[word] for word in words
+                       if word in counts and
+                       word not in expressions}
+        words_count.update(self.get_matches_count_dict(expressions, text))
+        return words_count
 
     def get_body_text_from_url(self, url):
         response = requests.get(url)
