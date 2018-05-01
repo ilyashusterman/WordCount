@@ -101,7 +101,7 @@ class Login extends Component {
       <div className="form-group">
         <ReCAPTCHA
         ref="recaptcha"
-        sitekey="6LclY1YUAAAAAEyL_gQtYRkZ_FMS_jqfNDsnKGUA"
+        sitekey="6LcNn1YUAAAAAC4rnC1SaPsb28Lc4UcenXoAiYs6"
         onChange={this.onCaptchaChange.bind(this)}
        />
       </div>
