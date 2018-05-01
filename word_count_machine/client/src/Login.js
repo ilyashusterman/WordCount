@@ -68,8 +68,8 @@ class Login extends Component {
     let user = cookies.get('user') ;
     console.log(user);
     //TODO delete me for debugging
-    return user !== undefined;
-    // return true;
+    // return user !== undefined;
+    return true;
   }
     componentWillMount(){
     if (this.checkUserLoggedIn()){
@@ -91,10 +91,12 @@ class Login extends Component {
         <div className="login-form">
       <h3 className="title">WordCounter Deluxe</h3>
       <div className="form-group" id="username">
-        <input className="form-input" onChange={this.handleChange('username')} placeholder="Username" name="username" required="true"></input>
+        <input className="form-input" onChange={this.handleChange('username')}
+               placeholder="Username" required="true" />
       </div>
       <div className="form-group" id="password">
-        <input name="password" onChange={this.handleChange('password')} type="password" className="form-input" placeholder="Password"></input>
+        <input onChange={this.handleChange('password')} type="password"
+               className="form-input" placeholder="Password" />
       </div>
       <div className="form-group">
         <ReCAPTCHA
