@@ -30,7 +30,7 @@ class WordCounter(object):
     def get_words_count_dict(self, words, text):
         counts = self.get_all_words_count(text)
         expressions = [word for word in words if len(word.split(' ')) > 1]
-        words_count = {word: counts[word] for word in words
+        words_count = {word: counts[word.lower()] for word in words
                        if word in counts and
                        word not in expressions}
         words_count.update(self.get_matches_count_dict(expressions, text))
