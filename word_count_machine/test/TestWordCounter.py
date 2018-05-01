@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 import os
 
@@ -29,12 +29,14 @@ class TestWordCounter(TestCase):
                                                              self.charts_text)
         self.assertDictEqual(check_result, words_count)
 
+    @skip('calling url is verbose for now')
     def test_count_one_word_from_url(self):
         word = 'chart'
         counts = self.word_counter.get_word_count(word,
                                                   'http://www.chartjs.org/')
         self.assertEqual(counts, 8)
 
+    @skip('calling url is verbose for now')
     def test_count_list_words_from_url(self):
         words = ['developers', 'chart']
         check_result = {
@@ -47,10 +49,11 @@ class TestWordCounter(TestCase):
         self.assertDictEqual(check_result, words_count)
 
     def test_count_match_list_from_text(self):
-        words = ['developers', 'chart']
+        words = ['developers', 'chart', 'noWayItWillFindMe']
         check_result = {
             'developers': 1,
-            'chart': 5
+            'chart': 5,
+            'noWayItWillFindMe': 0
         }
         words_count = \
             self.word_counter.get_matches_count_dict(words, self.charts_text)
