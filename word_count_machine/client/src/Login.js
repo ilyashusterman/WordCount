@@ -68,8 +68,8 @@ class Login extends Component {
     let user = cookies.get('user') ;
     console.log(user);
     //TODO delete me for debugging
-    // return user !== undefined;
-    return true;
+    return user !== undefined;
+    // return true;
   }
     componentWillMount(){
     if (this.checkUserLoggedIn()){

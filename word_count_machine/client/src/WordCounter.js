@@ -71,7 +71,7 @@ class WordCounter extends Component {
                 onChange={this.handleChange('url')}/>
             </div>
             <div className="form-group">
-                <h3>words match</h3>
+                <h3>words for match</h3>
                 {words}
                 <input className="form-input"
                        onChange={this.handleChange('currentWord')}  />
@@ -108,11 +108,14 @@ class WordCounter extends Component {
         Object.keys(results).forEach(function(key) {
             resultsList.push({'word': key, 'count': results[key]});
         });
-        const listItems = resultsList.map((word) =>
+        let listItems = resultsList.map((word) =>
             <li key={word['word'].toString()}>
                 <h3>  {word['word']}: {word['count']}</h3>
             </li>
           );
+        if (listItems === null || listItems === undefined){
+            listItems = (<h1>Nothing found :(</h1>)
+        }
           return (
               <div>
                   <h1>Done! this is what is counted</h1>

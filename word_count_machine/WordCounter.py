@@ -20,7 +20,8 @@ class WordCounter(object):
 
     def get_words_count_dict(self, words, text):
         counts = self.get_all_words_count(text)
-        return {word: counts[word] for word in words}
+        print('counts={}'.format(counts))
+        return {word: counts[word] for word in words if word in counts}
 
     def get_body_text_from_url(self, url):
         response = requests.get(url)

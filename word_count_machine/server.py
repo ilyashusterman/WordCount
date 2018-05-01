@@ -27,7 +27,6 @@ class WordCounterHandler(BaseHandler):
         self.word_counter = word_counter
 
     def post(self):
-        print('user={}'.format(self.get_current_user()))
         if not self.current_user:
             self.set_status(403)
             self.write(json.dumps({'status': 'not authenticated'}))
