@@ -41,4 +41,4 @@ class TestServer(AsyncHTTPTestCase):
             response = self.fetch('/count', body=json.dumps(body),
                                   method='POST')
             response_body = json.loads(response.body)
-            self.assertDictEqual(response_body, {'chart': 7})
+            self.assertDictEqual(response_body, {'chart': 8})
