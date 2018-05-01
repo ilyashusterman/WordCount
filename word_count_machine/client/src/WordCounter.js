@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './Login.css';
-import {loadingCss} from "./Login";
 import axios from "axios/index";
+import Typography from 'material-ui/Typography';
+import Popover from 'material-ui/Popover';
+import {loadingCss} from "./Login";
+import './Login.css';
 
 class WordCounter extends Component {
     constructor(){
@@ -16,24 +18,36 @@ class WordCounter extends Component {
             message: null
         }
     }
-    countWords(){
+
+    countWords(event){
         this.setState({loading: true});
         let self = this;
-      axios.post('/count', {
-          words: this.state.words,
-          url: this.state.url
-        }, {
-          headers: { 'Content-Type': 'text/plain' }})
-        .then(function (response) {
-            console.log(response);
-            console.log(response.data);
-          self.setState({resultFound: true, loading: false,
-          resultCount: response.data})
-        })
-        .catch(function (error) {
-          self.setState({message: error, loading: false});
-          console.log(error);
-        });
+        let requestWords = this.state.words;
+        let requestUrl = this.state.url;
+        if (requestWords.length>0 && requestUrl!== null) {
+            axios.post('/count', {
+                words: requestWords,
+                url: requestUrl
+            }, {
+                headers: {'Content-Type': 'text/plain'}
+            })
+                .then(function (response) {
+                    self.setState({
+                        resultFound: true, loading: false,
+                        resultCount: response.data,
+                        message: null
+                    })
+                })
+                .catch(function (error) {
+                    self.setState({message: error.message, loading: false,
+                    anchorEl: event.currentTarget
+                    });
+                });
+        }else{
+            this.setState({loading: false,
+                anchorEl: event.currentTarget,
+                message: 'Please add words'})
+        }
     }
     resetWords(){
         this.setState({
@@ -43,7 +57,8 @@ class WordCounter extends Component {
             words : [],
             currentWord: null,
             url: null,
-            message: null
+            message: null,
+            anchorEl: null,
         })
     }
 
@@ -60,6 +75,12 @@ class WordCounter extends Component {
       [name]: event.target.value,
     });
   };
+     handleClose = () => {
+    this.setState({
+      anchorEl: null,
+    });
+  };
+
   render() {
       let words = this.state.words;
       words = this.mapWords(words);
@@ -86,9 +107,13 @@ class WordCounter extends Component {
     );
     let display = this.state.loading? this.getLoading(): formWordsCount;
     display = this.state.resultFound? this.getResult(): display;
+    let message = this.state.message !== null? this.displayMessage(): null;
+    console.log('state.message', this.state.message);
+    console.log('message', message);
     return (
         <div>
             {display}
+            {message}
         </div>
     )
   }
@@ -113,7 +138,7 @@ class WordCounter extends Component {
                 <h3>  {word['word']}: {word['count']}</h3>
             </li>
           );
-        if (listItems === null || listItems === undefined){
+        if (listItems.length<1){
             listItems = (<h1>Nothing found :(</h1>)
         }
           return (
@@ -133,6 +158,26 @@ class WordCounter extends Component {
                 {loadingCss}
            </div>
         );
+    }
+
+    displayMessage() {
+      const { anchorEl } = this.state;
+      const { message } = this.state;
+      return (<Popover
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={this.handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          <Typography>{message}</Typography>
+        </Popover>)
     }
 }
 
