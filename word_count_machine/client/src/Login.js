@@ -3,11 +3,12 @@ import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import WordCounter from "./WordCounter";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from 'axios';
 import './Login.css';
 
 
 export const loadingCss = (
-    <div className='loader loader2'>
+<div className='loader loader2'>
   <div>
     <div>
       <div>
@@ -34,13 +35,32 @@ class Login extends Component {
       authenticated: false,
       captcha: false,
       username: null,
-      password: null
+      password: null,
+      message: null
     }
   }
 
   loginCredentials(){
     this.setState({loading: true});
     console.log(this.state.captcha);
+    if(this.state.captcha === false){
+      this.setState({loading: false,
+      message: 'wrong captcha!'});
+    }else{
+      let self = this;
+      axios.post('/login', {
+          username: this.state.username,
+          password: this.state.password
+        }, {
+          headers: { 'Content-Type': 'text/plain' }})
+        .then(function (response) {
+          self.setState({authenticated: true})
+        })
+        .catch(function (error) {
+          self.setState({message: error});
+          console.log(error);
+        });
+    }
   }
 
   checkUserLoggedIn(){
