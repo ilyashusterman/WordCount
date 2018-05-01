@@ -9,6 +9,7 @@ class WordCounter extends Component {
         this.state = {
             loading: false,
             resultFound: false,
+            resultCount: null,
             words : [],
             currentWord: null,
             url: null,
@@ -24,12 +25,26 @@ class WordCounter extends Component {
         }, {
           headers: { 'Content-Type': 'text/plain' }})
         .then(function (response) {
-          self.setState({resultFound: true, loading: false})
+            console.log(response);
+            console.log(response.data);
+          self.setState({resultFound: true, loading: false,
+          resultCount: response.data})
         })
         .catch(function (error) {
           self.setState({message: error, loading: false});
           console.log(error);
         });
+    }
+    resetWords(){
+        this.setState({
+            loading: false,
+            resultFound: false,
+            resultCount: null,
+            words : [],
+            currentWord: null,
+            url: null,
+            message: null
+        })
     }
 
     addWord(){
@@ -69,7 +84,7 @@ class WordCounter extends Component {
             </div>
         </div>
     );
-    let display = this.state.loading? loadingCss: formWordsCount;
+    let display = this.state.loading? this.getLoading(): formWordsCount;
     display = this.state.resultFound? this.getResult(): display;
     return (
         <div>
@@ -88,7 +103,33 @@ class WordCounter extends Component {
     }
 
     getResult() {
+        let results = this.state.resultCount;
+        let resultsList = [];
+        Object.keys(results).forEach(function(key) {
+            resultsList.push({'word': key, 'count': results[key]});
+        });
+        const listItems = resultsList.map((word) =>
+            <li key={word['word'].toString()}>
+                <h3>  {word['word']}: {word['count']}</h3>
+            </li>
+          );
+          return (
+              <div>
+                  <h1>Done! this is what is counted</h1>
+            <ul>{listItems}</ul>
+                  <button onClick={this.resetWords.bind(this)}
+                          className="login-button" >Start over</button>
+              </div>
+          );
+    }
 
+    getLoading() {
+        return (
+            <div>
+                <h1>Counting Words...</h1>
+                {loadingCss}
+           </div>
+        );
     }
 }
 
