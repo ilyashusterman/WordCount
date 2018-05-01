@@ -38,7 +38,6 @@ class WordCounter(object):
                        if word in counts and
                        word not in expressions}
         words_count.update(self.get_matches_count_dict(expressions, text))
-        print(list(words_count.keys()))
         zero_counts = {word: 0 for word in words
                        if word not in list(words_count.keys())}
         words_count.update(zero_counts)
