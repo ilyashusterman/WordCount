@@ -54,10 +54,10 @@ class Login extends Component {
         }, {
           headers: { 'Content-Type': 'text/plain' }})
         .then(function (response) {
-          self.setState({authenticated: true})
+          self.setState({authenticated: true, loading: false})
         })
         .catch(function (error) {
-          self.setState({message: error});
+          self.setState({message: error, loading: false});
           console.log(error);
         });
     }
